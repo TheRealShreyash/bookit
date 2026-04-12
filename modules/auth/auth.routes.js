@@ -3,14 +3,16 @@ import validate from "../../common/middlewares/validate.middleware.js";
 import { signUpPayloadModel } from "./auth.models.js";
 import AuthController from "./auth.controller.js";
 
-const authRouter = Router();
+const authRouter = (pool) => {
+  const router = Router();
 
-authRouter.post(
-  "/sign-up",
-  validate(signUpPayloadModel),
-  AuthController.handleSignup,
-);
-authRouter.post("/sign-in");
-authRouter.post("/logout");
+  router.post(
+    "/sign-up",
+    validate(signUpPayloadModel),
+    AuthController.handleSignup(pool),
+  );
+  router.post("/sign-in");
+  router.post("/logout");
+};
 
 export default authRouter;

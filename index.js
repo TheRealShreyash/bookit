@@ -36,7 +36,7 @@ const pool = new pg.Pool({
 const app = new express();
 app.use(cors());
 
-app.use("/auth", authRouter);
+app.use("/auth", authRouter(pool));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
