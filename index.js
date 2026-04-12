@@ -12,6 +12,8 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
+import authRouter from "./modules/auth/auth.routes.js";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const port = process.env.PORT || 8080;
@@ -33,6 +35,8 @@ const pool = new pg.Pool({
 
 const app = new express();
 app.use(cors());
+
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
