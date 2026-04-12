@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { createAccessToken } from "./utils/token.js";
+import { createAccessToken, createRefreshToken } from "./utils/token.js";
 import ApiError from "../../common/utils/api-error.js";
 
 export const signUp = async (payload, pool) => {
@@ -12,9 +12,9 @@ export const signUp = async (payload, pool) => {
   if (existing.rowCount > 0)
     throw ApiError.conflict(`User with ${email} already exists`);
 
-  const hashedPassword = bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 12);
 
-  const result = pool.query(
+  const result = await pool.query(
     `
         insert into users (first_name, last_name, email, password)
         values ($1, $2, $3, $4)
@@ -26,4 +26,30 @@ export const signUp = async (payload, pool) => {
   const user = result.rows[0];
 
   return user;
+};
+
+export const signIn = async (payload, pool) => {
+  const { email, password } = payload;
+
+  const exists = await pool.query("select * from users where email = $1", [
+    email,
+  ]);
+
+  if (exists.rowCount === 0)
+    throw ApiError.notFound(`User with the email ${email} doesn't exist`);
+
+  const isMatch = await bcrypt.compare(password, exists.rows[0].password);
+
+  if (!isMatch) throw ApiError.badRequest("Password is incorrect");
+
+  const accessToken = createAccessToken({ id: exists.id });
+
+  const refreshToken = createRefreshToken({ id: exists.id });
+
+  const user = Object.create(exists.rows[0]);
+
+  delete user.password;
+  delete user.refreshToken;
+
+  return { accessToken: accessToken, refreshToken: refreshToken, user: user };
 };

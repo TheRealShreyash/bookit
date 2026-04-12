@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validate from "../../common/middlewares/validate.middleware.js";
-import { signUpPayloadModel } from "./auth.models.js";
+import { signInPayloadModel, signUpPayloadModel } from "./auth.models.js";
 import AuthController from "./auth.controller.js";
 
 const authRouter = (pool) => {
@@ -11,7 +11,11 @@ const authRouter = (pool) => {
     validate(signUpPayloadModel),
     AuthController.handleSignup(pool),
   );
-  router.post("/sign-in");
+  router.post(
+    "/sign-in",
+    validate(signInPayloadModel),
+    AuthController.handleSignIn(pool),
+  );
   router.post("/logout");
 };
 
