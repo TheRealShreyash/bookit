@@ -21,10 +21,7 @@ class AuthController {
   handleSignin() {
     return async (req, res) => {
       try {
-        const { accessToken, refreshToken, user } = await signIn(
-          req.body,
-          this.pool,
-        );
+        const { accessToken, refreshToken } = await signIn(req.body, this.pool);
 
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -32,7 +29,6 @@ class AuthController {
           sameSize: "strict",
           maxAge: 24 * 60 * 60 * 1000,
         });
-        req.user = user;
 
         ApiResponse.ok(res, "Signed in", { accessToken });
       } catch (error) {

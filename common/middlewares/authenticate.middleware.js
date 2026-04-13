@@ -1,20 +1,27 @@
 import { verifyUserAccessToken } from "../../modules/auth/utils/token.js";
 import ApiError from "../utils/api-error.js";
+import ApiResponse from "../utils/api-response.js";
 
 export const authenticate = () => {
-  return (req, _, next) => {
+  return (req, res, next) => {
     const header = req.headers["authorization"];
 
     if (!header) return next();
 
     if (!header.startsWith("Bearer")) {
-      throw ApiError.badRequest("Authorization header must start with bearer");
+      return ApiResponse.error(
+        res,
+        ApiError.badRequest("Authorization header must start with Bearer"),
+      );
     }
 
-    const token = header.split(" ")[0];
+    const token = header.split(" ")[1];
 
     if (!token)
-      throw ApiError.badRequest("Authorization header must contain the token");
+      return ApiResponse.error(
+        res,
+        ApiError.badRequest("Token missing from authorization header"),
+      );
 
     const user = verifyUserAccessToken(token);
 

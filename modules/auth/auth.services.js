@@ -46,12 +46,12 @@ export const signIn = async (payload, pool) => {
 
   const refreshToken = createRefreshToken({ id: exists.id });
 
-  const user = Object.create(exists.rows[0]);
+  await pool.query("update users set refresh_token = $1 where email = $2", [
+    refreshToken,
+    email,
+  ]);
 
-  delete user.password;
-  delete user.refreshToken;
-
-  return { accessToken: accessToken, refreshToken: refreshToken, user: user };
+  return { accessToken: accessToken, refreshToken: refreshToken };
 };
 
 export const logout = async (req, pool) => {
@@ -60,7 +60,7 @@ export const logout = async (req, pool) => {
   if (!refreshToken) throw ApiError.badRequest("No refresh token found.");
 
   await pool.query(
-    "update table users set refresh_token = null where id = $1 and refresh_token = $2",
+    "update users set refresh_token = null where id = $1 and refresh_token = $2",
     [req.user.id, refreshToken],
   );
 };
