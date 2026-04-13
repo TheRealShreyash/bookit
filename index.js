@@ -13,6 +13,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 
 import authRouter from "./modules/auth/auth.routes.js";
+import "dotenv/config";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -34,6 +35,7 @@ const pool = new pg.Pool({
 });
 
 const app = new express();
+app.use(express.json())
 app.use(cors());
 
 app.use("/auth", authRouter(pool));

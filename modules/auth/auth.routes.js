@@ -5,18 +5,21 @@ import AuthController from "./auth.controller.js";
 
 const authRouter = (pool) => {
   const router = Router();
+  const controller = new AuthController(pool);
 
   router.post(
     "/sign-up",
     validate(signUpPayloadModel),
-    AuthController.handleSignup(pool),
+    controller.handleSignup().bind(AuthController),
   );
   router.post(
     "/sign-in",
     validate(signInPayloadModel),
-    AuthController.handleSignIn(pool),
+    controller.handleSignin().bind(AuthController),
   );
-  router.post("/logout");
+  // router.post("/logout");
+
+  return router;
 };
 
 export default authRouter;

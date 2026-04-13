@@ -2,10 +2,13 @@ import ApiResponse from "../../common/utils/api-response.js";
 import { signIn, signUp } from "./auth.services.js";
 
 class AuthController {
-  async handleSignup(pool) {
+  constructor(pool) {
+    this.pool = pool;
+  }
+  handleSignup() {
     return async (req, res) => {
       try {
-        const result = await signUp(req.body, pool);
+        const result = await signUp(req.body, this.pool);
         ApiResponse.created(res, "User was registered successfully", {
           id: result.id,
         });
@@ -15,15 +18,15 @@ class AuthController {
     };
   }
 
-  async handleSignIn(pool) {
+  handleSignin() {
     return async (req, res) => {
       try {
         const { accessToken, refreshToken, user } = await signIn(
           req.body,
-          pool,
+          this.pool,
         );
 
-        req.cookie("refreshToken", refreshToken, {
+        res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
           sameSize: "strict",
