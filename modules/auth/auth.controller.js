@@ -1,5 +1,5 @@
 import ApiResponse from "../../common/utils/api-response.js";
-import { signIn, signUp } from "./auth.services.js";
+import { logout, signIn, signUp } from "./auth.services.js";
 
 class AuthController {
   constructor(pool) {
@@ -35,6 +35,24 @@ class AuthController {
         req.user = user;
 
         ApiResponse.ok(res, "Signed in", { accessToken });
+      } catch (error) {
+        return ApiResponse.error(res, error);
+      }
+    };
+  }
+
+  handleLogout() {
+    return async (req, res) => {
+      try {
+        await logout(req, this.pool);
+
+        res.clearCookie("refreshToken", {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+        });
+
+        ApiResponse.ok(res, "Logged out successfully");
       } catch (error) {
         return ApiResponse.error(res, error);
       }

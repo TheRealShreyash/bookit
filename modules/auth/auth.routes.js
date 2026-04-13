@@ -1,5 +1,6 @@
 import { Router } from "express";
 import validate from "../../common/middlewares/validate.middleware.js";
+import restrictToAuthenticatedUser from "../../common/middlewares/authenticate.middleware.js";
 import { signInPayloadModel, signUpPayloadModel } from "./auth.models.js";
 import AuthController from "./auth.controller.js";
 
@@ -17,7 +18,11 @@ const authRouter = (pool) => {
     validate(signInPayloadModel),
     controller.handleSignin().bind(AuthController),
   );
-  // router.post("/logout");
+  router.post(
+    "/logout",
+    restrictToAuthenticatedUser(),
+    controller.handleLogout().bind(AuthController),
+  );
 
   return router;
 };

@@ -53,3 +53,14 @@ export const signIn = async (payload, pool) => {
 
   return { accessToken: accessToken, refreshToken: refreshToken, user: user };
 };
+
+export const logout = async (req, pool) => {
+  const refreshToken = req.cookies["refreshToken"];
+
+  if (!refreshToken) throw ApiError.badRequest("No refresh token found.");
+
+  await pool.query(
+    "update table users set refresh_token = null where id = $1 and refresh_token = $2",
+    [req.user.id, refreshToken],
+  );
+};
