@@ -101,19 +101,46 @@
     </div>
 
     <script>
+      async function apiFetch(url, options = {}) {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(url, {
+          ...options,
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: "include",
+        });
+
+        if (res.status === 401) {
+          const refreshRes = await fetch("/auth/refresh-token", {
+            method: "POST",
+            credentials: "include",
+          });
+
+          if (!refreshRes.ok) {
+            localStorage.removeItem("accessToken");
+            window.location.href = "/login";
+            return;
+          }
+
+          const { data } = await refreshRes.json();
+          localStorage.setItem("accessToken", data.accessToken);
+
+          return fetch(url, {
+            ...options,
+            headers: {
+              Authorization: `Bearer ${data.accessToken}`,
+            },
+            credentials: "include",
+          });
+        }
+        return res;
+      }
+
       async function run() {
         const tbl = document.getElementById("tbl");
         const accessToken = localStorage.getItem("accessToken");
-        const res = await fetch("/seats", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        if (res.status === 401 || res.status === 403) {
-          localStorage.removeItem("accessToken");
-          window.location.href = "/login"; // Redirect to login page
-          return;
-        }
+        const res = await apiFetch("/seats");
+        if (!res) return;
+
         const resarray = await res.json();
         console.log(resarray);
         const j = resarray.sort((a, b) => a.id - b.id);
@@ -153,12 +180,13 @@
               const name = prompt("Enter your name");
               if (!name) return;
 
-              const res = await fetch(`/${id}/${name}`, {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-                method: "PUT",
-              });
+              // const res = await fetch(`/${id}/${name}`, {
+              //   headers: {
+              //     Authorization: `Bearer ${accessToken}`,
+              //   },
+              //   method: "PUT",
+              // });
+              const res = await apiFetch(`/${id}/${name}`, { method: "PUT" });
               const data = await res.json();
 
               if (data.error) {
