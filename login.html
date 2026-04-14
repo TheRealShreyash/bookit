@@ -446,26 +446,27 @@
               credentials: "include",
             });
 
-            const { data } = await res.json();
-
-            if (!res.ok) {
-              errorMsg.textContent =
-                data.error || "Something went wrong. Please try again.";
+            if (res.status === 404) {
+              errorMsg.textContent = "Invalid email or password.";
               errorMsg.classList.add("show");
               btn.textContent = "Sign in";
               btn.classList.remove("loading");
               return;
             }
 
-            if (res.status === 404) {
-              errorMsg.textContent = "Invalid email or password.";
+            const result = await res.json();
+
+            if (!res.ok) {
+              errorMsg.textContent =
+                result.error || "Something went wrong. Please try again.";
               errorMsg.classList.add("show");
               btn.textContent = "Sign in";
               btn.classList.remove("loading");
+              return;
             }
 
             // Store access token and redirect
-            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("accessToken", result.data.accessToken);
             window.location.href = "/";
           } catch (err) {
             errorMsg.textContent =
