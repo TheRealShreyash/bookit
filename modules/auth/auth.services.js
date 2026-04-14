@@ -46,9 +46,9 @@ export const signIn = async (payload, pool) => {
 
   if (!isMatch) throw ApiError.badRequest("Password is incorrect");
 
-  const accessToken = createAccessToken({ id: exists.id });
+  const accessToken = createAccessToken({ id: exists.rows[0].id });
 
-  const refreshToken = createRefreshToken({ id: exists.id });
+  const refreshToken = createRefreshToken({ id: exists.rows[0].id });
 
   await pool.query("update users set refresh_token = $1 where email = $2", [
     refreshToken,
@@ -70,7 +70,7 @@ export const logout = async (req, pool) => {
 };
 
 export const refreshToken = async (req, pool) => {
-  const refreshToken = req.cookes["refreshToken"];
+  const refreshToken = req.cookies["refreshToken"];
 
   if (!refreshToken) throw ApiError.badRequest("No refresh token found.");
 
