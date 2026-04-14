@@ -54,6 +54,10 @@ app.get("/login", (req, res) => {
   res.sendFile(__dirname + "/login.html");
 });
 
+app.get("/signup", (req, res) => {
+  res.sendFile(__dirname + "/signup.html");
+});
+
 //get all seats
 app.get(
   "/seats",
