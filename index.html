@@ -67,6 +67,39 @@
       </div>
     </div>
 
+    <div style="position: fixed; top: 1.25rem; right: 1.5rem; z-index: 50">
+      <button
+        onclick="logout()"
+        style="
+          font-family: &quot;Outfit&quot;, sans-serif;
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #f8fafc;
+          background: rgba(15, 23, 42, 0.7);
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          border-radius: 999px;
+          padding: 0.5rem 1.25rem;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition:
+            background 0.2s,
+            border-color 0.2s;
+        "
+        onmouseover="
+          this.style.background = 'rgba(239,68,68,0.15)';
+          this.style.borderColor = 'rgba(239,68,68,0.4)';
+          this.style.color = '#fca5a5';
+        "
+        onmouseout="
+          this.style.background = 'rgba(15,23,42,0.7)';
+          this.style.borderColor = 'rgba(148,163,184,0.2)';
+          this.style.color = '#f8fafc';
+        "
+      >
+        Sign out
+      </button>
+    </div>
+
     <script>
       async function run() {
         const tbl = document.getElementById("tbl");
@@ -150,6 +183,22 @@
           tr.appendChild(td);
           tbl.appendChild(tr);
         }
+      }
+
+      async function logout() {
+        try {
+          await fetch("/auth/logout", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            credentials: "include",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+        localStorage.removeItem("accessToken");
+        window.location.href = "/login";
       }
       run();
     </script>
