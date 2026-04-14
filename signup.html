@@ -530,8 +530,9 @@
           errorMsg.classList.remove("show");
           successMsg.classList.remove("show");
 
-          if (!firstName || !lastName || !email || !password) {
-            errorMsg.textContent = "Please fill in all fields.";
+          if (!firstName || !email || !password) {
+            errorMsg.textContent =
+              "Please fill in all fields (Last Name is optional)";
             errorMsg.classList.add("show");
             return;
           }

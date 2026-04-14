@@ -455,6 +455,13 @@
               return;
             }
 
+            if (res.status === 404) {
+              errorMsg.textContent = "Invalid email or password.";
+              errorMsg.classList.add("show");
+              btn.textContent = "Sign in";
+              btn.classList.remove("loading");
+            }
+
             const data = await res.json();
 
             // Store access token and redirect
