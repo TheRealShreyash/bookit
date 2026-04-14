@@ -446,6 +446,8 @@
               credentials: "include",
             });
 
+            const { data } = await res.json();
+
             if (!res.ok) {
               errorMsg.textContent =
                 data.error || "Something went wrong. Please try again.";
@@ -462,10 +464,8 @@
               btn.classList.remove("loading");
             }
 
-            const data = await res.json();
-
             // Store access token and redirect
-            localStorage.setItem("accessToken", data.data.accessToken);
+            localStorage.setItem("accessToken", data.accessToken);
             window.location.href = "/";
           } catch (err) {
             errorMsg.textContent =
