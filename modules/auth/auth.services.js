@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
-import { createAccessToken, createRefreshToken } from "./utils/token.js";
+import {
+  createAccessToken,
+  createRefreshToken,
+  verifyRefreshToken,
+} from "./utils/token.js";
 import ApiError from "../../common/utils/api-error.js";
 
 export const signUp = async (payload, pool) => {
@@ -63,4 +67,28 @@ export const logout = async (req, pool) => {
     "update users set refresh_token = null where id = $1 and refresh_token = $2",
     [req.user.id, refreshToken],
   );
+};
+
+export const refreshToken = async (req, pool) => {
+  const refreshToken = req.cookes["refreshToken"];
+
+  if (!refreshToken) throw ApiError.badRequest("No refresh token found.");
+
+  const decoded = verifyRefreshToken(refreshToken);
+
+  if (!decoded) throw ApiError.badRequest("Incorrect refresh token");
+
+  const result = await pool.query(
+    "select * from users where id = $1 and refresh_token = $2",
+    [decoded.id, refreshToken],
+  );
+
+  if (result.rowCount === 0)
+    throw ApiError.unauthorized("Invalid refresh token");
+
+  const user = result.rows[0];
+
+  const accessToken = createAccessToken({ id: user.id });
+
+  return { accessToken };
 };

@@ -28,6 +28,8 @@ const authRouter = (pool) => {
     controller.handleLogout(),
   );
 
+  router.post("/refresh-token", controller.handleRefresh());
+
   return router;
 };
 
