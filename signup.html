@@ -1,475 +1,581 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>bookIT — Create Account</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --ink: #1a1a18;
-    --ink-soft: #5c5c58;
-    --ink-faint: #9a9a94;
-    --surface: #faf9f6;
-    --gold: #c9a84c;
-    --gold-dark: #a8893a;
-    --gold-light: #f5e9c8;
-    --red: #c0392b;
-    --border: rgba(26,26,24,0.12);
-  }
-
-  html, body {
-    height: 100%;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--surface);
-    color: var(--ink);
-  }
-
-  body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 100vh;
-  }
-
-  /* RIGHT becomes the form side for signup — reversed layout */
-  .panel-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
-    order: 1;
-  }
-
-  .panel-accent {
-    background: var(--ink);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem;
-    position: relative;
-    overflow: hidden;
-    order: 2;
-  }
-
-  .panel-accent::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    border: 1px solid rgba(201,168,76,0.08);
-  }
-  .panel-accent::after {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 350px; height: 350px;
-    border-radius: 50%;
-    border: 1px solid rgba(201,168,76,0.12);
-  }
-
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    color: #fff;
-    letter-spacing: -0.02em;
-    position: relative;
-    z-index: 1;
-  }
-  .logo span { color: var(--gold); }
-
-  .accent-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .steps {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .step {
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-start;
-  }
-
-  .step-num {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(201,168,76,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--gold);
-    flex-shrink: 0;
-  }
-
-  .step-text h3 {
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: #fff;
-    margin-bottom: 0.25rem;
-  }
-  .step-text p {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.4);
-    line-height: 1.6;
-  }
-
-  /* FORM */
-  .form-card {
-    width: 100%;
-    max-width: 420px;
-  }
-
-  .form-header {
-    margin-bottom: 2rem;
-  }
-  .form-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
-  }
-  .form-header p {
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-  }
-  .form-header p a {
-    color: var(--gold-dark);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .form-header p a:hover { text-decoration: underline; }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .form-group { margin-bottom: 1.25rem; }
-
-  label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 0.5rem;
-  }
-
-  input {
-    width: 100%;
-    height: 48px;
-    padding: 0 1rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    color: var(--ink);
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  input::placeholder { color: var(--ink-faint); }
-  input:hover { border-color: rgba(26,26,24,0.25); }
-  input:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
-  }
-  input.invalid {
-    border-color: rgba(192,57,43,0.5);
-    box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
-  }
-
-  .password-wrap { position: relative; }
-  .password-wrap input { padding-right: 3rem; }
-  .toggle-pw {
-    position: absolute;
-    right: 1rem; top: 50%;
-    transform: translateY(-50%);
-    background: none; border: none;
-    cursor: pointer; padding: 0;
-    color: var(--ink-faint);
-    font-size: 0.75rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  .toggle-pw:hover { color: var(--ink-soft); }
-
-  .strength-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 0.5rem;
-    overflow: hidden;
-  }
-  .strength-fill {
-    height: 100%;
-    border-radius: 2px;
-    transition: width 0.3s, background 0.3s;
-    width: 0%;
-  }
-
-  .strength-label {
-    font-size: 0.75rem;
-    color: var(--ink-faint);
-    margin-top: 0.3rem;
-    min-height: 1em;
-  }
-
-  .btn-primary {
-    width: 100%;
-    height: 50px;
-    margin-top: 0.5rem;
-    background: var(--ink);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
-    letter-spacing: 0.02em;
-  }
-  .btn-primary:hover { background: #2d2d2a; }
-  .btn-primary:active { transform: scale(0.99); }
-  .btn-primary.loading { pointer-events: none; opacity: 0.7; }
-
-  .terms {
-    font-size: 0.78rem;
-    color: var(--ink-faint);
-    text-align: center;
-    margin-top: 1rem;
-    line-height: 1.6;
-  }
-  .terms a { color: var(--ink-soft); text-decoration: underline; }
-
-  .error-msg {
-    display: none;
-    background: #fdf0ef;
-    border: 1px solid rgba(192,57,43,0.2);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-    color: var(--red);
-    margin-bottom: 1.25rem;
-  }
-  .error-msg.show { display: block; }
-
-  .success-msg {
-    display: none;
-    background: #f0faf4;
-    border: 1px solid rgba(39,136,87,0.2);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-    color: #276833;
-    margin-bottom: 1.25rem;
-  }
-  .success-msg.show { display: block; }
-
-  @media (max-width: 768px) {
-    body { grid-template-columns: 1fr; }
-    .panel-accent { display: none; }
-    .panel-form { padding: 2rem 1.5rem; }
-    .form-row { grid-template-columns: 1fr; }
-  }
-</style>
-</head>
-<body>
-
-<div class="panel-form">
-  <div class="form-card">
-    <div class="form-header">
-      <h1>Create account</h1>
-      <p>Already have one? <a href="/login.html">Sign in →</a></p>
-    </div>
-
-    <div class="error-msg" id="errorMsg"></div>
-    <div class="success-msg" id="successMsg"></div>
-
-    <form id="signupForm" novalidate>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="firstName">First name</label>
-          <input type="text" id="firstName" placeholder="Jane" autocomplete="given-name" required>
-        </div>
-        <div class="form-group">
-          <label for="lastName">Last name</label>
-          <input type="text" id="lastName" placeholder="Smith" autocomplete="family-name" required>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="jane@example.com" autocomplete="email" required>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <div class="password-wrap">
-          <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password" required>
-          <button type="button" class="toggle-pw" id="togglePw">show</button>
-        </div>
-        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
-        <div class="strength-label" id="strengthLabel"></div>
-      </div>
-
-      <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
-    </form>
-
-    <p class="terms">By signing up you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
-  </div>
-</div>
-
-<div class="panel-accent">
-  <div class="logo">book<span>IT</span></div>
-
-  <div class="accent-content">
-    <p style="font-family:'DM Serif Display',serif;font-size:2.25rem;color:#fff;line-height:1.15;margin-bottom:2.5rem;font-style:italic;">
-      Three steps to<br>your <span style="color:var(--gold)">perfect seat.</span>
-    </p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-text">
-          <h3>Create your account</h3>
-          <p>Quick signup — no credit card needed until you book.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-text">
-          <h3>Browse available seats</h3>
-          <p>See the full layout and pick exactly where you want to sit.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-text">
-          <h3>Confirm your booking</h3>
-          <p>Your seat is held instantly — enjoy the show.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);position:relative;z-index:1;">© 2025 bookIT. All rights reserved.</p>
-</div>
-
-<script>
-  // Password toggle
-  const pwInput = document.getElementById('password');
-  const toggleBtn = document.getElementById('togglePw');
-  toggleBtn.addEventListener('click', () => {
-    const isHidden = pwInput.type === 'password';
-    pwInput.type = isHidden ? 'text' : 'password';
-    toggleBtn.textContent = isHidden ? 'hide' : 'show';
-  });
-
-  // Password strength
-  const strengthFill = document.getElementById('strengthFill');
-  const strengthLabel = document.getElementById('strengthLabel');
-
-  pwInput.addEventListener('input', () => {
-    const val = pwInput.value;
-    let score = 0;
-    if (val.length >= 6) score++;
-    if (val.length >= 10) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
-
-    const levels = [
-      { pct: '0%', color: 'transparent', label: '' },
-      { pct: '20%', color: '#e74c3c', label: 'Very weak' },
-      { pct: '45%', color: '#e67e22', label: 'Weak' },
-      { pct: '65%', color: '#f1c40f', label: 'Fair' },
-      { pct: '85%', color: '#2ecc71', label: 'Strong' },
-      { pct: '100%', color: '#27ae60', label: 'Very strong' },
-    ];
-
-    const level = levels[score] || levels[0];
-    strengthFill.style.width = level.pct;
-    strengthFill.style.background = level.color;
-    strengthLabel.textContent = val.length ? level.label : '';
-    strengthLabel.style.color = level.color;
-  });
-
-  // Form submit
-  document.getElementById('signupForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    const errorMsg = document.getElementById('errorMsg');
-    const successMsg = document.getElementById('successMsg');
-
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = pwInput.value;
-
-    errorMsg.classList.remove('show');
-    successMsg.classList.remove('show');
-
-    if (!firstName || !lastName || !email || !password) {
-      errorMsg.textContent = 'Please fill in all fields.';
-      errorMsg.classList.add('show');
-      return;
-    }
-
-    if (password.length < 6) {
-      errorMsg.textContent = 'Password must be at least 6 characters.';
-      errorMsg.classList.add('show');
-      return;
-    }
-
-    btn.textContent = 'Creating account…';
-    btn.classList.add('loading');
-
-    try {
-      const res = await fetch('/auth/sign-up', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstName, lastName, email, password }),
-        credentials: 'include',
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        errorMsg.textContent = data.error || 'Something went wrong. Please try again.';
-        errorMsg.classList.add('show');
-        btn.textContent = 'Create account';
-        btn.classList.remove('loading');
-        return;
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bookIT — Create Account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      successMsg.textContent = 'Account created! Redirecting you to sign in…';
-      successMsg.classList.add('show');
-      setTimeout(() => window.location.href = '/login.html', 1500);
-    } catch (err) {
-      errorMsg.textContent = 'Could not connect to server. Please try again.';
-      errorMsg.classList.add('show');
-      btn.textContent = 'Create account';
-      btn.classList.remove('loading');
-    }
-  });
-</script>
-</body>
+      :root {
+        --ink: #1a1a18;
+        --ink-soft: #5c5c58;
+        --ink-faint: #9a9a94;
+        --surface: #faf9f6;
+        --gold: #c9a84c;
+        --gold-dark: #a8893a;
+        --red: #c0392b;
+        --border: rgba(26, 26, 24, 0.12);
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "DM Sans", sans-serif;
+        background: var(--surface);
+        color: var(--ink);
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .panel-form {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+        background: var(--surface);
+      }
+
+      .panel-accent {
+        width: 45%;
+        flex-shrink: 0;
+        background: var(--ink);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .panel-accent::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 168, 76, 0.08);
+        pointer-events: none;
+      }
+      .panel-accent::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 168, 76, 0.13);
+        pointer-events: none;
+      }
+
+      .logo {
+        font-family: "DM Serif Display", serif;
+        font-size: 2rem;
+        color: #fff;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+      .logo span {
+        color: var(--gold);
+      }
+
+      .accent-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .accent-title {
+        font-family: "DM Serif Display", serif;
+        font-size: 2.25rem;
+        color: #fff;
+        line-height: 1.15;
+        margin-bottom: 2.5rem;
+        font-style: italic;
+      }
+      .accent-title em {
+        color: var(--gold);
+        font-style: normal;
+      }
+
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .step {
+        display: flex;
+        gap: 1.25rem;
+        align-items: flex-start;
+      }
+
+      .step-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 168, 76, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--gold);
+        flex-shrink: 0;
+      }
+
+      .step-text h3 {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: #fff;
+        margin-bottom: 0.25rem;
+      }
+      .step-text p {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.4);
+        line-height: 1.6;
+      }
+
+      .accent-footer {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.2);
+        position: relative;
+        z-index: 1;
+      }
+
+      .form-card {
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .form-header {
+        margin-bottom: 2rem;
+      }
+      .form-header h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+      }
+      .form-header p {
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+      }
+      .form-header p a {
+        color: var(--gold-dark);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .form-header p a:hover {
+        text-decoration: underline;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 0.5rem;
+      }
+
+      input {
+        width: 100%;
+        height: 48px;
+        padding: 0 1rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      input::placeholder {
+        color: var(--ink-faint);
+      }
+      input:hover {
+        border-color: rgba(26, 26, 24, 0.25);
+      }
+      input:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+      }
+
+      .password-wrap {
+        position: relative;
+      }
+      .password-wrap input {
+        padding-right: 3.5rem;
+      }
+      .toggle-pw {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: var(--ink-faint);
+        font-size: 0.75rem;
+        font-family: "DM Sans", sans-serif;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .toggle-pw:hover {
+        color: var(--ink-soft);
+      }
+
+      .strength-bar {
+        height: 3px;
+        background: var(--border);
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+      .strength-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition:
+          width 0.3s,
+          background 0.3s;
+        width: 0%;
+      }
+      .strength-label {
+        font-size: 0.75rem;
+        color: var(--ink-faint);
+        margin-top: 0.3rem;
+        min-height: 1em;
+      }
+
+      .btn-primary {
+        width: 100%;
+        height: 50px;
+        margin-top: 0.5rem;
+        background: var(--ink);
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .btn-primary:hover {
+        background: #2d2d2a;
+      }
+      .btn-primary:active {
+        transform: scale(0.99);
+      }
+      .btn-primary.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .terms {
+        font-size: 0.78rem;
+        color: var(--ink-faint);
+        text-align: center;
+        margin-top: 1rem;
+        line-height: 1.6;
+      }
+      .terms a {
+        color: var(--ink-soft);
+        text-decoration: underline;
+      }
+
+      .error-msg {
+        display: none;
+        background: #fdf0ef;
+        border: 1px solid rgba(192, 57, 43, 0.2);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: var(--red);
+        margin-bottom: 1.25rem;
+      }
+      .error-msg.show {
+        display: block;
+      }
+
+      .success-msg {
+        display: none;
+        background: #f0faf4;
+        border: 1px solid rgba(39, 136, 87, 0.2);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: #276833;
+        margin-bottom: 1.25rem;
+      }
+      .success-msg.show {
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        .panel-accent {
+          display: none;
+        }
+        .panel-form {
+          padding: 2rem 1.5rem;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel-form">
+      <div class="form-card">
+        <div class="form-header">
+          <h1>Create account</h1>
+          <p>Already have one? <a href="/login.html">Sign in →</a></p>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+        <div class="success-msg" id="successMsg"></div>
+
+        <form id="signupForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First name</label>
+              <input
+                type="text"
+                id="firstName"
+                placeholder="Jane"
+                autocomplete="given-name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name</label>
+              <input
+                type="text"
+                id="lastName"
+                placeholder="Smith"
+                autocomplete="family-name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="jane@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input
+                type="password"
+                id="password"
+                placeholder="Min. 6 characters"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="toggle-pw" id="togglePw">
+                show
+              </button>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel"></div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            Create account
+          </button>
+        </form>
+
+        <p class="terms">
+          By signing up you agree to our <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+    </div>
+
+    <div class="panel-accent">
+      <div class="logo">book<span>IT</span></div>
+
+      <div class="accent-content">
+        <p class="accent-title">
+          Three steps to<br />your <em>perfect seat.</em>
+        </p>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-text">
+              <h3>Create your account</h3>
+              <p>Quick signup — no credit card needed until you book.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-text">
+              <h3>Browse available seats</h3>
+              <p>See the full layout and pick exactly where you want to sit.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-text">
+              <h3>Confirm your booking</h3>
+              <p>Your seat is held instantly — enjoy the show.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="accent-footer">© 2025 bookIT. All rights reserved.</p>
+    </div>
+
+    <script>
+      const pwInput = document.getElementById("password");
+      const toggleBtn = document.getElementById("togglePw");
+      toggleBtn.addEventListener("click", () => {
+        const isHidden = pwInput.type === "password";
+        pwInput.type = isHidden ? "text" : "password";
+        toggleBtn.textContent = isHidden ? "hide" : "show";
+      });
+
+      const strengthFill = document.getElementById("strengthFill");
+      const strengthLabel = document.getElementById("strengthLabel");
+
+      pwInput.addEventListener("input", () => {
+        const val = pwInput.value;
+        let score = 0;
+        if (val.length >= 6) score++;
+        if (val.length >= 10) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const levels = [
+          { pct: "0%", color: "transparent", label: "" },
+          { pct: "20%", color: "#e74c3c", label: "Very weak" },
+          { pct: "45%", color: "#e67e22", label: "Weak" },
+          { pct: "65%", color: "#f1c40f", label: "Fair" },
+          { pct: "85%", color: "#2ecc71", label: "Strong" },
+          { pct: "100%", color: "#27ae60", label: "Very strong" },
+        ];
+
+        const level = levels[score] || levels[0];
+        strengthFill.style.width = level.pct;
+        strengthFill.style.background = level.color;
+        strengthLabel.textContent = val.length ? level.label : "";
+        strengthLabel.style.color = level.color;
+      });
+
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("submitBtn");
+          const errorMsg = document.getElementById("errorMsg");
+          const successMsg = document.getElementById("successMsg");
+
+          const firstName = document.getElementById("firstName").value.trim();
+          const lastName = document.getElementById("lastName").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = pwInput.value;
+
+          errorMsg.classList.remove("show");
+          successMsg.classList.remove("show");
+
+          if (!firstName || !lastName || !email || !password) {
+            errorMsg.textContent = "Please fill in all fields.";
+            errorMsg.classList.add("show");
+            return;
+          }
+
+          if (password.length < 6) {
+            errorMsg.textContent = "Password must be at least 6 characters.";
+            errorMsg.classList.add("show");
+            return;
+          }
+
+          btn.textContent = "Creating account…";
+          btn.classList.add("loading");
+
+          try {
+            const res = await fetch("/auth/sign-up", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ firstName, lastName, email, password }),
+              credentials: "include",
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+              errorMsg.textContent =
+                data.error || "Something went wrong. Please try again.";
+              errorMsg.classList.add("show");
+              btn.textContent = "Create account";
+              btn.classList.remove("loading");
+              return;
+            }
+
+            successMsg.textContent =
+              "Account created! Redirecting you to sign in…";
+            successMsg.classList.add("show");
+            setTimeout(() => (window.location.href = "/login"), 1500);
+          } catch (err) {
+            errorMsg.textContent =
+              "Could not connect to server. Please try again.";
+            errorMsg.classList.add("show");
+            btn.textContent = "Create account";
+            btn.classList.remove("loading");
+          }
+        });
+    </script>
+  </body>
 </html>
