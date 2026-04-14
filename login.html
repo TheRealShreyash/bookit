@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bookIT — Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --ink: #1a1a18;
+        --ink-soft: #5c5c58;
+        --ink-faint: #9a9a94;
+        --surface: #faf9f6;
+        --surface-alt: #f2f0eb;
+        --gold: #c9a84c;
+        --gold-dark: #a8893a;
+        --gold-light: #f5e9c8;
+        --red: #c0392b;
+        --border: rgba(26, 26, 24, 0.12);
+        --border-focus: #c9a84c;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "DM Sans", sans-serif;
+        background: var(--surface);
+        color: var(--ink);
+      }
+
+      body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+      }
+
+      /* LEFT PANEL */
+      .panel-left {
+        background: var(--ink);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .panel-left::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        right: -120px;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 168, 76, 0.15);
+      }
+      .panel-left::after {
+        content: "";
+        position: absolute;
+        bottom: -80px;
+        left: -80px;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        border: 1px solid rgba(201, 168, 76, 0.1);
+      }
+
+      .logo {
+        font-family: "DM Serif Display", serif;
+        font-size: 2rem;
+        color: #fff;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+      .logo span {
+        color: var(--gold);
+      }
+
+      .left-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .tagline {
+        font-family: "DM Serif Display", serif;
+        font-size: 3rem;
+        line-height: 1.1;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+      .tagline em {
+        color: var(--gold);
+        font-style: normal;
+      }
+
+      .left-desc {
+        font-size: 0.95rem;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.7;
+        max-width: 340px;
+      }
+
+      .seat-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 6px;
+        margin-top: 3rem;
+        position: relative;
+        z-index: 1;
+      }
+      .seat {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.3s;
+      }
+      .seat.taken {
+        background: rgba(201, 168, 76, 0.3);
+        border-color: rgba(201, 168, 76, 0.4);
+      }
+      .seat.yours {
+        background: var(--gold);
+        border-color: var(--gold);
+      }
+
+      .legend {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+      }
+
+      /* RIGHT PANEL */
+      .panel-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem;
+      }
+
+      .form-card {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .form-header {
+        margin-bottom: 2.5rem;
+      }
+      .form-header h1 {
+        font-family: "DM Serif Display", serif;
+        font-size: 2rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+      }
+      .form-header p {
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+      }
+      .form-header p a {
+        color: var(--gold-dark);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .form-header p a:hover {
+        text-decoration: underline;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        margin-bottom: 0.5rem;
+      }
+
+      input {
+        width: 100%;
+        height: 48px;
+        padding: 0 1rem;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      input::placeholder {
+        color: var(--ink-faint);
+      }
+      input:hover {
+        border-color: rgba(26, 26, 24, 0.25);
+      }
+      input:focus {
+        border-color: var(--border-focus);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+      }
+
+      .forgot {
+        display: block;
+        text-align: right;
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+        text-decoration: none;
+        margin-top: 0.4rem;
+        transition: color 0.2s;
+      }
+      .forgot:hover {
+        color: var(--gold-dark);
+      }
+
+      .btn-primary {
+        width: 100%;
+        height: 50px;
+        margin-top: 0.75rem;
+        background: var(--ink);
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .btn-primary:hover {
+        background: #2d2d2a;
+      }
+      .btn-primary:active {
+        transform: scale(0.99);
+      }
+      .btn-primary.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.75rem 0;
+        color: var(--ink-faint);
+        font-size: 0.8rem;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      .error-msg {
+        display: none;
+        background: #fdf0ef;
+        border: 1px solid rgba(192, 57, 43, 0.2);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        color: var(--red);
+        margin-bottom: 1.25rem;
+      }
+      .error-msg.show {
+        display: block;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          grid-template-columns: 1fr;
+        }
+        .panel-left {
+          display: none;
+        }
+        .panel-right {
+          padding: 2rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel-left">
+      <div class="logo">book<span>IT</span></div>
+
+      <div class="left-content">
+        <p class="tagline">Your seat<br />is <em>waiting</em>.</p>
+        <p class="left-desc">
+          Reserve your spot for the shows you love. Fast, simple, and secure
+          seat booking — right where you need it.
+        </p>
+
+        <div class="seat-grid" id="seatGrid"></div>
+        <div class="legend">
+          <div class="legend-item">
+            <div
+              class="legend-dot"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+              "
+            ></div>
+            Available
+          </div>
+          <div class="legend-item">
+            <div
+              class="legend-dot"
+              style="background: rgba(201, 168, 76, 0.3)"
+            ></div>
+            Taken
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot" style="background: #c9a84c"></div>
+            Yours
+          </div>
+        </div>
+      </div>
+
+      <p
+        style="
+          font-size: 0.75rem;
+          color: rgba(255, 255, 255, 0.2);
+          position: relative;
+          z-index: 1;
+        "
+      >
+        © 2025 bookIT. All rights reserved.
+      </p>
+    </div>
+
+    <div class="panel-right">
+      <div class="form-card">
+        <div class="form-header">
+          <h1>Welcome back</h1>
+          <p>No account? <a href="/signup.html">Create one free →</a></p>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <a href="#" class="forgot">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn-primary" id="submitBtn">
+            Sign in
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Animate seat grid
+      const grid = document.getElementById("seatGrid");
+      const taken = [2, 5, 9, 11, 15, 18, 22, 23, 28, 31];
+      const yours = [13];
+      for (let i = 0; i < 32; i++) {
+        const seat = document.createElement("div");
+        seat.className =
+          "seat" +
+          (taken.includes(i) ? " taken" : yours.includes(i) ? " yours" : "");
+        seat.style.animationDelay = i * 30 + "ms";
+        grid.appendChild(seat);
+      }
+
+      // Form submission
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById("submitBtn");
+          const errorMsg = document.getElementById("errorMsg");
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          btn.textContent = "Signing in…";
+          btn.classList.add("loading");
+          errorMsg.classList.remove("show");
+
+          try {
+            const res = await fetch("/auth/sign-in", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+              credentials: "include",
+            });
+
+            if (!res.ok) {
+              errorMsg.textContent =
+                data.error || "Something went wrong. Please try again.";
+              errorMsg.classList.add("show");
+              btn.textContent = "Sign in";
+              btn.classList.remove("loading");
+              return;
+            }
+
+            const data = await res.json();
+
+            // Store access token and redirect
+            localStorage.setItem("accessToken", data.data.accessToken);
+            window.location.href = "/";
+          } catch (err) {
+            errorMsg.textContent =
+              "Could not connect to server. Please try again.";
+            errorMsg.classList.add("show");
+            btn.textContent = "Sign in";
+            btn.classList.remove("loading");
+          }
+        });
+    </script>
+  </body>
+</html>
