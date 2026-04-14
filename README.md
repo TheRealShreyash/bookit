@@ -19,8 +19,6 @@
 
 **bookIT** is a cinematic seat booking platform developed as a follow-up to the **Chai Aur SQL** module. Designed to mimic a real-world developer scenario, this project extends a starting code base by adding a robust authentication system, managing concurrent seat bookings with PostgreSQL transactions, and ensuring an intuitive, aesthetic frontend.
 
-Now showing: **Dhurandhar The Revenge** — _"Jassi ko ghar ki yaad kyu nhi aai?"_
-
 ---
 
 ## ✨ Features Implemented
@@ -28,7 +26,6 @@ Now showing: **Dhurandhar The Revenge** — _"Jassi ko ghar ki yaad kyu nhi aai?
 - 🔐 **Robust Authentication Layer**: End-to-end registration and login functionality utilizing encrypted bcrypt passwords, HTTP-only refresh cookies, and secure short-lived Access JWTs.
 - 🛡️ **Protected Routing**: Specialized authentication middleware strictly restricting unauthorized access to critical endpoints (e.g., viewing seats, making bookings).
 - 💺 **Bulletproof Seat Booking Engine**: Prevents double-booking via robust **SQL transactions (`FOR UPDATE`)**, ensuring concurrent booking attempts cannot hijack the same seat.
-- 🎨 **Stunning Frontend UI/UX**: Overhauled glassmorphism UI built elegantly with TailwindCSS, smooth dynamic micro-animations, tooltips, and a visually satisfying grid interface.
 - 🔄 **Seamless Session Maintenance**: Silent auto-refresh for JWT tokens directly from the frontend to keep your ticket-booking spree uninterrupted!
 
 ---
@@ -45,7 +42,7 @@ Now showing: **Dhurandhar The Revenge** — _"Jassi ko ghar ki yaad kyu nhi aai?
 
 - **Authentication:** JSON Web Tokens (`jsonwebtoken`)
 - **Password Hashing:** `bcrypt`
-- **Schema Validation:** Zod
+- **Schema Validation:** `zod`
 - **Cookies:** `cookie-parser`
 
 **Frontend Aesthetics**
@@ -112,6 +109,7 @@ CREATE TABLE users (
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50),
     email VARCHAR(322) UNIQUE NOT NULL,
+    password VARCHAR(15) NOT NULL,
     email_verified BOOLEAN DEFAULT FALSE,
     refresh_token TEXT,
     created_at DATE,
