@@ -446,14 +446,6 @@
               credentials: "include",
             });
 
-            if (res.status === 404) {
-              errorMsg.textContent = "Invalid email or password.";
-              errorMsg.classList.add("show");
-              btn.textContent = "Sign in";
-              btn.classList.remove("loading");
-              return;
-            }
-
             const result = await res.json();
 
             if (!res.ok) {
