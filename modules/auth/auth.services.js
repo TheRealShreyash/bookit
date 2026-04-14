@@ -5,6 +5,7 @@ import {
   verifyRefreshToken,
 } from "./utils/token.js";
 import ApiError from "../../common/utils/api-error.js";
+import { v4 as uuidv4 } from "uuid";
 
 export const signUp = async (payload, pool) => {
   const { firstName, lastName, email, password } = payload;
@@ -20,11 +21,11 @@ export const signUp = async (payload, pool) => {
 
   const result = await pool.query(
     `
-        insert into users (first_name, last_name, email, password)
-        values ($1, $2, $3, $4)
+        insert into users (id, first_name, last_name, email, password)
+        values ($1, $2, $3, $4, $5)
         returning id, first_name, last_name, email
         `,
-    [firstName, lastName, email, hashedPassword],
+    [uuidv4(), firstName, lastName, email, hashedPassword],
   );
 
   const user = result.rows[0];
