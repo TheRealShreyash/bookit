@@ -1,15 +1,30 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bookIT — Sign In</title>
+    <title>Sign In · BookIT</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Manrope:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --bg: #0f0f0f;
+        --bg2: #161616;
+        --bg3: #1e1e1e;
+        --bg4: #272727;
+        --amber: #e8a045;
+        --amber2: #f0b866;
+        --text: #f5f0e8;
+        --text2: rgba(245, 240, 232, 0.52);
+        --text3: rgba(245, 240, 232, 0.25);
+        --border: rgba(245, 240, 232, 0.06);
+        --border2: rgba(245, 240, 232, 0.11);
+        --input-bg: rgba(245, 240, 232, 0.04);
+        --red-err: #ff8a80;
+      }
       *,
       *::before,
       *::after {
@@ -17,150 +32,153 @@
         margin: 0;
         padding: 0;
       }
-
-      :root {
-        --ink: #1a1a18;
-        --ink-soft: #5c5c58;
-        --ink-faint: #9a9a94;
-        --surface: #faf9f6;
-        --surface-alt: #f2f0eb;
-        --gold: #c9a84c;
-        --gold-dark: #a8893a;
-        --gold-light: #f5e9c8;
-        --red: #c0392b;
-        --border: rgba(26, 26, 24, 0.12);
-        --border-focus: #c9a84c;
-      }
-
       html,
       body {
         height: 100%;
-        font-family: "DM Sans", sans-serif;
-        background: var(--surface);
-        color: var(--ink);
+      }
+      body {
+        font-family: "Manrope", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
       }
 
-      body {
+      /* Grain */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.35;
+      }
+
+      /* Layout */
+      .page {
         display: grid;
         grid-template-columns: 1fr 1fr;
         min-height: 100vh;
+        position: relative;
+        z-index: 1;
       }
 
-      /* LEFT PANEL */
+      /* ── Left: visual panel ── */
       .panel-left {
-        background: var(--ink);
+        background: var(--bg2);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 3rem;
+        border-right: 1px solid var(--border);
         position: relative;
         overflow: hidden;
       }
 
+      /* Big decorative number */
       .panel-left::before {
-        content: "";
+        content: "映";
         position: absolute;
-        top: -120px;
-        right: -120px;
-        width: 420px;
-        height: 420px;
-        border-radius: 50%;
-        border: 1px solid rgba(201, 168, 76, 0.15);
-      }
-      .panel-left::after {
-        content: "";
-        position: absolute;
-        bottom: -80px;
-        left: -80px;
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        border: 1px solid rgba(201, 168, 76, 0.1);
+        bottom: -40px;
+        right: -30px;
+        font-family: "Playfair Display", serif;
+        font-size: 22rem;
+        font-weight: 900;
+        color: rgba(232, 160, 69, 0.025);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
       }
 
-      .logo {
-        font-family: "DM Serif Display", serif;
-        font-size: 2rem;
-        color: #fff;
+      .panel-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text);
         letter-spacing: -0.02em;
-        position: relative;
-        z-index: 1;
       }
-      .logo span {
-        color: var(--gold);
-      }
-
-      .left-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .tagline {
-        font-family: "DM Serif Display", serif;
-        font-size: 3rem;
-        line-height: 1.1;
-        color: #fff;
-        margin-bottom: 1.5rem;
-        font-style: italic;
-      }
-      .tagline em {
-        color: var(--gold);
+      .panel-logo em {
+        color: var(--amber);
         font-style: normal;
       }
 
-      .left-desc {
-        font-size: 0.95rem;
-        color: rgba(255, 255, 255, 0.5);
-        line-height: 1.7;
-        max-width: 340px;
-      }
-
-      .seat-grid {
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        gap: 6px;
-        margin-top: 3rem;
+      .panel-body {
         position: relative;
         z-index: 1;
       }
-      .seat {
-        width: 100%;
-        aspect-ratio: 1;
-        border-radius: 4px;
-        background: rgba(255, 255, 255, 0.07);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        transition: background 0.3s;
-      }
-      .seat.taken {
-        background: rgba(201, 168, 76, 0.3);
-        border-color: rgba(201, 168, 76, 0.4);
-      }
-      .seat.yours {
-        background: var(--gold);
-        border-color: var(--gold);
+
+      .panel-eyebrow {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 1.1rem;
+        opacity: 0.85;
       }
 
-      .legend {
+      .panel-heading {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--text);
+        margin-bottom: 1.25rem;
+      }
+      .panel-heading em {
+        color: var(--amber);
+        font-style: italic;
+      }
+
+      .panel-desc {
+        font-size: 0.88rem;
+        color: var(--text2);
+        line-height: 1.8;
+        max-width: 320px;
+        margin-bottom: 2.5rem;
+      }
+
+      /* Feature pills */
+      .features {
         display: flex;
-        gap: 1.5rem;
-        margin-top: 1rem;
-        position: relative;
-        z-index: 1;
+        flex-direction: column;
+        gap: 0.85rem;
       }
-      .legend-item {
+      .feature {
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.4);
+        gap: 0.85rem;
       }
-      .legend-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 2px;
+      .feature-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+      .feature-text {
+        font-size: 0.8rem;
+        color: var(--text2);
+        line-height: 1.5;
+      }
+      .feature-text strong {
+        color: var(--text);
+        font-weight: 600;
       }
 
-      /* RIGHT PANEL */
+      .panel-footer {
+        font-size: 0.62rem;
+        color: var(--text3);
+        letter-spacing: 0.12em;
+      }
+
+      /* ── Right: form ── */
       .panel-right {
         display: flex;
         align-items: center;
@@ -174,270 +192,276 @@
       }
 
       .form-header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 2.25rem;
       }
-      .form-header h1 {
-        font-family: "DM Serif Display", serif;
+      .form-title {
+        font-family: "Playfair Display", serif;
         font-size: 2rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.4rem;
         letter-spacing: -0.02em;
-        margin-bottom: 0.5rem;
       }
-      .form-header p {
-        font-size: 0.9rem;
-        color: var(--ink-soft);
+      .form-sub {
+        font-size: 0.82rem;
+        color: var(--text2);
       }
-      .form-header p a {
-        color: var(--gold-dark);
+      .form-sub a {
+        color: var(--amber);
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
       }
-      .form-header p a:hover {
+      .form-sub a:hover {
         text-decoration: underline;
       }
 
-      .form-group {
-        margin-bottom: 1.25rem;
+      /* Divider */
+      .form-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin-bottom: 1.75rem;
+      }
+      .form-divider::before,
+      .form-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border2);
+      }
+      .form-divider span {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text3);
       }
 
+      /* Error */
+      .err-box {
+        display: none;
+        background: rgba(255, 80, 60, 0.08);
+        border: 1px solid rgba(255, 80, 60, 0.2);
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 0.82rem;
+        color: var(--red-err);
+        margin-bottom: 1.25rem;
+        line-height: 1.5;
+      }
+      .err-box.show {
+        display: block;
+      }
+
+      /* Fields */
+      .field {
+        margin-bottom: 1.1rem;
+      }
       label {
         display: block;
-        font-size: 0.8rem;
-        font-weight: 500;
-        letter-spacing: 0.06em;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
         text-transform: uppercase;
-        color: var(--ink-soft);
-        margin-bottom: 0.5rem;
+        color: var(--text2);
+        margin-bottom: 0.45rem;
       }
-
       input {
         width: 100%;
-        height: 48px;
+        height: 50px;
         padding: 0 1rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        color: var(--ink);
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        font-family: "Manrope", sans-serif;
+        font-size: 0.92rem;
+        color: var(--text);
+        background: var(--input-bg);
+        border: 1px solid var(--border2);
+        border-radius: 10px;
         outline: none;
         transition:
           border-color 0.2s,
-          box-shadow 0.2s;
+          box-shadow 0.2s,
+          background 0.2s;
       }
       input::placeholder {
-        color: var(--ink-faint);
+        color: var(--text3);
       }
       input:hover {
-        border-color: rgba(26, 26, 24, 0.25);
+        border-color: rgba(245, 240, 232, 0.2);
       }
       input:focus {
-        border-color: var(--border-focus);
-        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+        border-color: var(--amber);
+        box-shadow: 0 0 0 3px rgba(232, 160, 69, 0.12);
+        background: rgba(245, 240, 232, 0.06);
       }
 
       .forgot {
         display: block;
         text-align: right;
-        font-size: 0.8rem;
-        color: var(--ink-faint);
+        font-size: 0.72rem;
+        color: var(--text3);
         text-decoration: none;
         margin-top: 0.4rem;
         transition: color 0.2s;
       }
       .forgot:hover {
-        color: var(--gold-dark);
+        color: var(--amber);
       }
 
-      .btn-primary {
+      /* Button */
+      .btn {
         width: 100%;
-        height: 50px;
-        margin-top: 0.75rem;
-        background: var(--ink);
-        color: #fff;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 500;
+        height: 52px;
+        margin-top: 0.5rem;
+        font-family: "Manrope", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--bg);
+        background: var(--amber);
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
-        position: relative;
-        overflow: hidden;
         transition:
           background 0.2s,
-          transform 0.15s;
-        letter-spacing: 0.02em;
+          transform 0.15s,
+          box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
       }
-      .btn-primary:hover {
-        background: #2d2d2a;
-      }
-      .btn-primary:active {
-        transform: scale(0.99);
-      }
-      .btn-primary.loading {
-        pointer-events: none;
-        opacity: 0.7;
-      }
-
-      .divider {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin: 1.75rem 0;
-        color: var(--ink-faint);
-        font-size: 0.8rem;
-      }
-      .divider::before,
-      .divider::after {
+      .btn::before {
         content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          transparent 55%
+        );
+      }
+      .btn:hover {
+        background: var(--amber2);
+        box-shadow: 0 6px 24px rgba(232, 160, 69, 0.35);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn.loading {
+        pointer-events: none;
+        opacity: 0.6;
       }
 
-      .error-msg {
-        display: none;
-        background: #fdf0ef;
-        border: 1px solid rgba(192, 57, 43, 0.2);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-        color: var(--red);
-        margin-bottom: 1.25rem;
-      }
-      .error-msg.show {
-        display: block;
-      }
-
-      @media (max-width: 768px) {
-        body {
+      /* Mobile */
+      @media (max-width: 700px) {
+        .page {
           grid-template-columns: 1fr;
         }
         .panel-left {
           display: none;
         }
         .panel-right {
-          padding: 2rem 1.5rem;
+          padding: 2.5rem 1.5rem;
         }
       }
     </style>
   </head>
   <body>
-    <div class="panel-left">
-      <div class="logo">book<span>IT</span></div>
+    <div class="page">
+      <!-- Left panel -->
+      <div class="panel-left">
+        <div class="panel-logo">book<em>IT</em></div>
 
-      <div class="left-content">
-        <p class="tagline">Your seat<br />is <em>waiting</em>.</p>
-        <p class="left-desc">
-          Reserve your spot for the shows you love. Fast, simple, and secure
-          seat booking — right where you need it.
-        </p>
+        <div class="panel-body">
+          <div class="panel-eyebrow">Now Showing</div>
+          <h2 class="panel-heading">Your seat<br />is <em>waiting</em>.</h2>
+          <p class="panel-desc">
+            Reserve your spot for the shows you love. Fast, secure, and
+            beautifully simple seat booking.
+          </p>
 
-        <div class="seat-grid" id="seatGrid"></div>
-        <div class="legend">
-          <div class="legend-item">
-            <div
-              class="legend-dot"
-              style="
-                background: rgba(255, 255, 255, 0.07);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-              "
-            ></div>
-            Available
-          </div>
-          <div class="legend-item">
-            <div
-              class="legend-dot"
-              style="background: rgba(201, 168, 76, 0.3)"
-            ></div>
-            Taken
-          </div>
-          <div class="legend-item">
-            <div class="legend-dot" style="background: #c9a84c"></div>
-            Yours
+          <div class="features">
+            <div class="feature">
+              <div class="feature-icon">🎬</div>
+              <div class="feature-text">
+                <strong>Browse seats</strong> — pick exactly where you sit
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-text">
+                <strong>Instant booking</strong> — your seat is held immediately
+              </div>
+            </div>
+            <div class="feature">
+              <div class="feature-icon">🔒</div>
+              <div class="feature-text">
+                <strong>Secure</strong> — protected with JWT authentication
+              </div>
+            </div>
           </div>
         </div>
+
+        <div class="panel-footer">© 2025 BookIT · All rights reserved</div>
       </div>
 
-      <p
-        style="
-          font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.2);
-          position: relative;
-          z-index: 1;
-        "
-      >
-        © 2025 bookIT. All rights reserved.
-      </p>
-    </div>
+      <!-- Right panel: form -->
+      <div class="panel-right">
+        <div class="form-card">
+          <div class="form-header">
+            <h1 class="form-title">Welcome back</h1>
+            <p class="form-sub">
+              No account? <a href="/signup">Create one →</a>
+            </p>
+          </div>
 
-    <div class="panel-right">
-      <div class="form-card">
-        <div class="form-header">
-          <h1>Welcome back</h1>
-          <p>No account? <a href="/signup">Create one free →</a></p>
+          <div class="form-divider"><span>Sign in</span></div>
+
+          <div class="err-box" id="err"></div>
+
+          <form id="loginForm" novalidate>
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                required
+              />
+              <a href="#" class="forgot">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn" id="submitBtn">Sign in</button>
+          </form>
         </div>
-
-        <div class="error-msg" id="errorMsg"></div>
-
-        <form id="loginForm" novalidate>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="you@example.com"
-              autocomplete="email"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              autocomplete="current-password"
-              required
-            />
-            <a href="#" class="forgot">Forgot password?</a>
-          </div>
-
-          <button type="submit" class="btn-primary" id="submitBtn">
-            Sign in
-          </button>
-        </form>
       </div>
     </div>
 
     <script>
-      // Animate seat grid
-      const grid = document.getElementById("seatGrid");
-      const taken = [2, 5, 9, 11, 15, 18, 22, 23, 28, 31];
-      const yours = [13];
-      for (let i = 0; i < 32; i++) {
-        const seat = document.createElement("div");
-        seat.className =
-          "seat" +
-          (taken.includes(i) ? " taken" : yours.includes(i) ? " yours" : "");
-        seat.style.animationDelay = i * 30 + "ms";
-        grid.appendChild(seat);
-      }
-
-      // Form submission
       document
         .getElementById("loginForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
           const btn = document.getElementById("submitBtn");
-          const errorMsg = document.getElementById("errorMsg");
-          const email = document.getElementById("email").value;
+          const err = document.getElementById("err");
+          const email = document.getElementById("email").value.trim();
           const password = document.getElementById("password").value;
-
+          err.classList.remove("show");
+          if (!email || !password) {
+            err.textContent = "Please fill in all fields.";
+            err.classList.add("show");
+            return;
+          }
           btn.textContent = "Signing in…";
           btn.classList.add("loading");
-          errorMsg.classList.remove("show");
-
           try {
             const res = await fetch("/auth/sign-in", {
               method: "POST",
@@ -445,26 +469,23 @@
               body: JSON.stringify({ email, password }),
               credentials: "include",
             });
-
-            const result = await res.json();
-
+            const data = await res.json();
             if (!res.ok) {
-              errorMsg.textContent =
-                result.error || "Something went wrong. Please try again.";
-              errorMsg.classList.add("show");
-              btn.textContent = "Sign in";
+              err.textContent = data.error || "Something went wrong.";
+              err.classList.add("show");
+              btn.textContent = "Sign in to BookIT";
               btn.classList.remove("loading");
               return;
             }
-
-            // Store access token and redirect
-            localStorage.setItem("accessToken", result.data.accessToken);
+            localStorage.setItem(
+              "accessToken",
+              data.accessToken || data.data?.accessToken,
+            );
             window.location.href = "/";
-          } catch (err) {
-            errorMsg.textContent =
-              "Could not connect to server. Please try again.";
-            errorMsg.classList.add("show");
-            btn.textContent = "Sign in";
+          } catch (ex) {
+            err.textContent = "Could not connect. Please try again.";
+            err.classList.add("show");
+            btn.textContent = "Sign in to BookIT";
             btn.classList.remove("loading");
           }
         });

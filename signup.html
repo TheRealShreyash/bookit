@@ -1,15 +1,31 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bookIT — Create Account</title>
+    <title>Create Account · BookIT</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Manrope:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
+      :root {
+        --bg: #0f0f0f;
+        --bg2: #161616;
+        --bg3: #1e1e1e;
+        --bg4: #272727;
+        --amber: #e8a045;
+        --amber2: #f0b866;
+        --text: #f5f0e8;
+        --text2: rgba(245, 240, 232, 0.52);
+        --text3: rgba(245, 240, 232, 0.25);
+        --border: rgba(245, 240, 232, 0.06);
+        --border2: rgba(245, 240, 232, 0.11);
+        --input-bg: rgba(245, 240, 232, 0.04);
+        --red-err: #ff8a80;
+        --green-ok: #80cfa9;
+      }
       *,
       *::before,
       *::after {
@@ -17,149 +33,43 @@
         margin: 0;
         padding: 0;
       }
-
-      :root {
-        --ink: #1a1a18;
-        --ink-soft: #5c5c58;
-        --ink-faint: #9a9a94;
-        --surface: #faf9f6;
-        --gold: #c9a84c;
-        --gold-dark: #a8893a;
-        --red: #c0392b;
-        --border: rgba(26, 26, 24, 0.12);
-      }
-
       html,
       body {
         height: 100%;
-        font-family: "DM Sans", sans-serif;
-        background: var(--surface);
-        color: var(--ink);
       }
-
       body {
-        display: flex;
+        font-family: "Manrope", sans-serif;
+        background: var(--bg);
+        color: var(--text);
         min-height: 100vh;
+        overflow-x: hidden;
       }
 
-      .panel-form {
-        flex: 1;
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.35;
+      }
+
+      .page {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── Left: form ── */
+      .panel-left {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 3rem 2rem;
-        background: var(--surface);
-      }
-
-      .panel-accent {
-        width: 45%;
-        flex-shrink: 0;
-        background: var(--ink);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 3rem;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .panel-accent::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        border: 1px solid rgba(201, 168, 76, 0.08);
-        pointer-events: none;
-      }
-      .panel-accent::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 320px;
-        height: 320px;
-        border-radius: 50%;
-        border: 1px solid rgba(201, 168, 76, 0.13);
-        pointer-events: none;
-      }
-
-      .logo {
-        font-family: "DM Serif Display", serif;
-        font-size: 2rem;
-        color: #fff;
-        letter-spacing: -0.02em;
-        position: relative;
-        z-index: 1;
-      }
-      .logo span {
-        color: var(--gold);
-      }
-
-      .accent-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .accent-title {
-        font-family: "DM Serif Display", serif;
-        font-size: 2.25rem;
-        color: #fff;
-        line-height: 1.15;
-        margin-bottom: 2.5rem;
-        font-style: italic;
-      }
-      .accent-title em {
-        color: var(--gold);
-        font-style: normal;
-      }
-
-      .steps {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-      }
-      .step {
-        display: flex;
-        gap: 1.25rem;
-        align-items: flex-start;
-      }
-
-      .step-num {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid rgba(201, 168, 76, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--gold);
-        flex-shrink: 0;
-      }
-
-      .step-text h3 {
-        font-weight: 500;
-        font-size: 0.95rem;
-        color: #fff;
-        margin-bottom: 0.25rem;
-      }
-      .step-text p {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.4);
-        line-height: 1.6;
-      }
-
-      .accent-footer {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.2);
-        position: relative;
-        z-index: 1;
+        border-right: 1px solid var(--border);
       }
 
       .form-card {
@@ -170,79 +80,140 @@
       .form-header {
         margin-bottom: 2rem;
       }
-      .form-header h1 {
-        font-family: "DM Serif Display", serif;
-        font-size: 2rem;
+      .form-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text);
         letter-spacing: -0.02em;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        display: block;
       }
-      .form-header p {
-        font-size: 0.9rem;
-        color: var(--ink-soft);
+      .form-logo em {
+        color: var(--amber);
+        font-style: normal;
       }
-      .form-header p a {
-        color: var(--gold-dark);
+
+      .form-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.4rem;
+        letter-spacing: -0.02em;
+      }
+      .form-sub {
+        font-size: 0.82rem;
+        color: var(--text2);
+      }
+      .form-sub a {
+        color: var(--amber);
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
       }
-      .form-header p a:hover {
+      .form-sub a:hover {
         text-decoration: underline;
       }
 
-      .form-row {
+      .form-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        margin: 1.75rem 0;
+      }
+      .form-divider::before,
+      .form-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border2);
+      }
+      .form-divider span {
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text3);
+      }
+
+      /* Alerts */
+      .alert {
+        display: none;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 0.82rem;
+        margin-bottom: 1.1rem;
+        line-height: 1.5;
+      }
+      .alert.err {
+        background: rgba(255, 80, 60, 0.08);
+        border: 1px solid rgba(255, 80, 60, 0.2);
+        color: var(--red-err);
+      }
+      .alert.ok {
+        background: rgba(80, 200, 140, 0.08);
+        border: 1px solid rgba(80, 200, 140, 0.2);
+        color: var(--green-ok);
+      }
+      .alert.show {
+        display: block;
+      }
+
+      /* Row */
+      .row2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        margin-bottom: 1.25rem;
+        gap: 0.9rem;
       }
 
-      .form-group {
-        margin-bottom: 1.25rem;
+      .field {
+        margin-bottom: 1rem;
       }
-
       label {
         display: block;
-        font-size: 0.75rem;
-        font-weight: 500;
-        letter-spacing: 0.06em;
+        font-size: 0.67rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
         text-transform: uppercase;
-        color: var(--ink-soft);
-        margin-bottom: 0.5rem;
+        color: var(--text2);
+        margin-bottom: 0.42rem;
       }
-
       input {
         width: 100%;
-        height: 48px;
+        height: 50px;
         padding: 0 1rem;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        color: var(--ink);
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 8px;
+        font-family: "Manrope", sans-serif;
+        font-size: 0.92rem;
+        color: var(--text);
+        background: var(--input-bg);
+        border: 1px solid var(--border2);
+        border-radius: 10px;
         outline: none;
         transition:
           border-color 0.2s,
-          box-shadow 0.2s;
+          box-shadow 0.2s,
+          background 0.2s;
       }
       input::placeholder {
-        color: var(--ink-faint);
+        color: var(--text3);
       }
       input:hover {
-        border-color: rgba(26, 26, 24, 0.25);
+        border-color: rgba(245, 240, 232, 0.2);
       }
       input:focus {
-        border-color: var(--gold);
-        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+        border-color: var(--amber);
+        box-shadow: 0 0 0 3px rgba(232, 160, 69, 0.12);
+        background: rgba(245, 240, 232, 0.06);
       }
 
-      .password-wrap {
+      /* Password */
+      .pw-wrap {
         position: relative;
       }
-      .password-wrap input {
+      .pw-wrap input {
         padding-right: 3.5rem;
       }
-      .toggle-pw {
+      .pw-toggle {
         position: absolute;
         right: 1rem;
         top: 50%;
@@ -250,296 +221,412 @@
         background: none;
         border: none;
         cursor: pointer;
-        padding: 0;
-        color: var(--ink-faint);
-        font-size: 0.75rem;
-        font-family: "DM Sans", sans-serif;
-        font-weight: 500;
+        color: var(--text3);
+        font-size: 0.7rem;
+        font-family: "Manrope", sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.05em;
         transition: color 0.2s;
       }
-      .toggle-pw:hover {
-        color: var(--ink-soft);
+      .pw-toggle:hover {
+        color: var(--text2);
       }
 
-      .strength-bar {
-        height: 3px;
-        background: var(--border);
+      /* Strength */
+      .strength {
+        height: 2px;
+        background: var(--border2);
         border-radius: 2px;
-        margin-top: 0.5rem;
+        margin-top: 0.45rem;
         overflow: hidden;
       }
-      .strength-fill {
+      .s-fill {
         height: 100%;
         border-radius: 2px;
         transition:
           width 0.3s,
           background 0.3s;
-        width: 0%;
+        width: 0;
       }
-      .strength-label {
-        font-size: 0.75rem;
-        color: var(--ink-faint);
+      .s-label {
+        font-size: 0.68rem;
+        color: var(--text3);
         margin-top: 0.3rem;
         min-height: 1em;
       }
 
-      .btn-primary {
+      /* Button */
+      .btn {
         width: 100%;
-        height: 50px;
+        height: 52px;
         margin-top: 0.5rem;
-        background: var(--ink);
-        color: #fff;
-        font-family: "DM Sans", sans-serif;
-        font-size: 0.95rem;
-        font-weight: 500;
+        font-family: "Manrope", sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--bg);
+        background: var(--amber);
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         transition:
           background 0.2s,
-          transform 0.15s;
-        letter-spacing: 0.02em;
+          transform 0.15s,
+          box-shadow 0.2s;
+        position: relative;
+        overflow: hidden;
       }
-      .btn-primary:hover {
-        background: #2d2d2a;
+      .btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          transparent 55%
+        );
       }
-      .btn-primary:active {
-        transform: scale(0.99);
+      .btn:hover {
+        background: var(--amber2);
+        box-shadow: 0 6px 24px rgba(232, 160, 69, 0.35);
       }
-      .btn-primary.loading {
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn.loading {
         pointer-events: none;
-        opacity: 0.7;
+        opacity: 0.6;
       }
 
       .terms {
-        font-size: 0.78rem;
-        color: var(--ink-faint);
+        font-size: 0.68rem;
+        color: var(--text3);
         text-align: center;
         margin-top: 1rem;
         line-height: 1.6;
       }
       .terms a {
-        color: var(--ink-soft);
+        color: rgba(245, 240, 232, 0.35);
         text-decoration: underline;
       }
 
-      .error-msg {
-        display: none;
-        background: #fdf0ef;
-        border: 1px solid rgba(192, 57, 43, 0.2);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-        color: var(--red);
-        margin-bottom: 1.25rem;
-      }
-      .error-msg.show {
-        display: block;
+      /* ── Right: visual ── */
+      .panel-right {
+        background: var(--bg2);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
       }
 
-      .success-msg {
-        display: none;
-        background: #f0faf4;
-        border: 1px solid rgba(39, 136, 87, 0.2);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-size: 0.85rem;
-        color: #276833;
-        margin-bottom: 1.25rem;
-      }
-      .success-msg.show {
-        display: block;
+      .panel-right::before {
+        content: "01";
+        position: absolute;
+        bottom: -60px;
+        right: -40px;
+        font-family: "Playfair Display", serif;
+        font-size: 26rem;
+        font-weight: 900;
+        color: rgba(232, 160, 69, 0.02);
+        line-height: 1;
+        pointer-events: none;
+        user-select: none;
       }
 
-      @media (max-width: 768px) {
-        .panel-accent {
+      .pr-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.02em;
+      }
+      .pr-logo em {
+        color: var(--amber);
+        font-style: normal;
+      }
+
+      .pr-body {
+        position: relative;
+        z-index: 1;
+      }
+
+      .pr-eyebrow {
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--amber);
+        margin-bottom: 1rem;
+        opacity: 0.85;
+      }
+
+      .pr-heading {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+        font-weight: 900;
+        line-height: 1.1;
+        color: var(--text);
+        margin-bottom: 2.5rem;
+      }
+      .pr-heading em {
+        color: var(--amber);
+        font-style: italic;
+      }
+
+      /* Steps */
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+      }
+      .step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .step-num {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border-radius: 8px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--amber);
+      }
+      .step-content h4 {
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.2rem;
+      }
+      .step-content p {
+        font-size: 0.78rem;
+        color: var(--text2);
+        line-height: 1.6;
+      }
+
+      .pr-footer {
+        font-size: 0.62rem;
+        color: var(--text3);
+        letter-spacing: 0.12em;
+      }
+
+      /* Mobile */
+      @media (max-width: 700px) {
+        .page {
+          grid-template-columns: 1fr;
+        }
+        .panel-right {
           display: none;
         }
-        .panel-form {
-          padding: 2rem 1.5rem;
+        .panel-left {
+          padding: 2.5rem 1.5rem;
+          align-items: flex-start;
         }
-        .form-row {
+        .row2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 360px) {
+        .row2 {
           grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
-    <div class="panel-form">
-      <div class="form-card">
-        <div class="form-header">
-          <h1>Create account</h1>
-          <p>Already have one? <a href="/login.html">Sign in →</a></p>
-        </div>
+    <div class="page">
+      <!-- Left: form -->
+      <div class="panel-left">
+        <div class="form-card">
+          <div class="form-header">
+            <span class="form-logo">book<em>IT</em></span>
+            <h1 class="form-title">Create account</h1>
+            <p class="form-sub">
+              Already have one? <a href="/login">Sign in →</a>
+            </p>
+          </div>
 
-        <div class="error-msg" id="errorMsg"></div>
-        <div class="success-msg" id="successMsg"></div>
+          <div class="form-divider"><span>Register</span></div>
 
-        <form id="signupForm" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="firstName">First name</label>
+          <div class="alert err" id="err"></div>
+          <div class="alert ok" id="ok"></div>
+
+          <form id="signupForm" novalidate>
+            <div class="row2">
+              <div class="field">
+                <label for="firstName">First name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  placeholder="Jane"
+                  autocomplete="given-name"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="lastName">Last name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  placeholder="Smith"
+                  autocomplete="family-name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
               <input
-                type="text"
-                id="firstName"
-                placeholder="Jane"
-                autocomplete="given-name"
+                type="email"
+                id="email"
+                placeholder="jane@example.com"
+                autocomplete="email"
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="lastName">Last name</label>
-              <input
-                type="text"
-                id="lastName"
-                placeholder="Smith"
-                autocomplete="family-name"
-                required
-              />
-            </div>
-          </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="jane@example.com"
-              autocomplete="email"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="password">Password</label>
-            <div class="password-wrap">
-              <input
-                type="password"
-                id="password"
-                placeholder="Min. 6 characters"
-                autocomplete="new-password"
-                required
-              />
-              <button type="button" class="toggle-pw" id="togglePw">
-                show
-              </button>
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="pw-wrap">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Min. 6 characters"
+                  autocomplete="new-password"
+                  required
+                />
+                <button type="button" class="pw-toggle" id="pwToggle">
+                  show
+                </button>
+              </div>
+              <div class="strength"><div class="s-fill" id="sBar"></div></div>
+              <div class="s-label" id="sLabel"></div>
             </div>
-            <div class="strength-bar">
-              <div class="strength-fill" id="strengthFill"></div>
-            </div>
-            <div class="strength-label" id="strengthLabel"></div>
-          </div>
 
-          <button type="submit" class="btn-primary" id="submitBtn">
-            Create account
-          </button>
-        </form>
+            <button type="submit" class="btn" id="submitBtn">
+              Create your account
+            </button>
+          </form>
 
-        <p class="terms">
-          By signing up you agree to our <a href="#">Terms of Service</a> and
-          <a href="#">Privacy Policy</a>.
-        </p>
-      </div>
-    </div>
-
-    <div class="panel-accent">
-      <div class="logo">book<span>IT</span></div>
-
-      <div class="accent-content">
-        <p class="accent-title">
-          Three steps to<br />your <em>perfect seat.</em>
-        </p>
-        <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <div class="step-text">
-              <h3>Create your account</h3>
-              <p>Quick signup — no credit card needed until you book.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <div class="step-text">
-              <h3>Browse available seats</h3>
-              <p>See the full layout and pick exactly where you want to sit.</p>
-            </div>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <div class="step-text">
-              <h3>Confirm your booking</h3>
-              <p>Your seat is held instantly — enjoy the show.</p>
-            </div>
-          </div>
+          <p class="terms">
+            By signing up you agree to our <a href="#">Terms</a> and
+            <a href="#">Privacy Policy</a>.
+          </p>
         </div>
       </div>
 
-      <p class="accent-footer">© 2025 bookIT. All rights reserved.</p>
+      <!-- Right: visual panel -->
+      <div class="panel-right">
+        <div class="pr-logo">book<em>IT</em></div>
+
+        <div class="pr-body">
+          <div class="pr-eyebrow">Get started in minutes</div>
+          <h2 class="pr-heading">
+            Three steps to<br />your <em>perfect</em><br />seat.
+          </h2>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">01</div>
+              <div class="step-content">
+                <h4>Create your account</h4>
+                <p>Quick signup — no credit card required until you book.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <div class="step-content">
+                <h4>Browse the seat map</h4>
+                <p>
+                  See every available seat and pick exactly where you want to
+                  sit.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <div class="step-content">
+                <h4>Confirm your booking</h4>
+                <p>Your seat is held instantly. Enjoy the show.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pr-footer">© 2025 BookIT · All rights reserved</div>
+      </div>
     </div>
 
     <script>
+      // Password toggle
       const pwInput = document.getElementById("password");
-      const toggleBtn = document.getElementById("togglePw");
-      toggleBtn.addEventListener("click", () => {
-        const isHidden = pwInput.type === "password";
-        pwInput.type = isHidden ? "text" : "password";
-        toggleBtn.textContent = isHidden ? "hide" : "show";
+      document.getElementById("pwToggle").addEventListener("click", () => {
+        const hidden = pwInput.type === "password";
+        pwInput.type = hidden ? "text" : "password";
+        document.getElementById("pwToggle").textContent = hidden
+          ? "hide"
+          : "show";
       });
 
-      const strengthFill = document.getElementById("strengthFill");
-      const strengthLabel = document.getElementById("strengthLabel");
-
+      // Strength meter
+      const sBar = document.getElementById("sBar");
+      const sLabel = document.getElementById("sLabel");
       pwInput.addEventListener("input", () => {
-        const val = pwInput.value;
-        let score = 0;
-        if (val.length >= 6) score++;
-        if (val.length >= 10) score++;
-        if (/[A-Z]/.test(val)) score++;
-        if (/[0-9]/.test(val)) score++;
-        if (/[^A-Za-z0-9]/.test(val)) score++;
-
+        const v = pwInput.value;
+        let s = 0;
+        if (v.length >= 6) s++;
+        if (v.length >= 10) s++;
+        if (/[A-Z]/.test(v)) s++;
+        if (/[0-9]/.test(v)) s++;
+        if (/[^A-Za-z0-9]/.test(v)) s++;
         const levels = [
-          { pct: "0%", color: "transparent", label: "" },
-          { pct: "20%", color: "#e74c3c", label: "Very weak" },
-          { pct: "45%", color: "#e67e22", label: "Weak" },
-          { pct: "65%", color: "#f1c40f", label: "Fair" },
-          { pct: "85%", color: "#2ecc71", label: "Strong" },
-          { pct: "100%", color: "#27ae60", label: "Very strong" },
+          { w: "0%", c: "transparent", l: "" },
+          { w: "20%", c: "#e74c3c", l: "Very weak" },
+          { w: "42%", c: "#e67e22", l: "Weak" },
+          { w: "64%", c: "#f1c40f", l: "Fair" },
+          { w: "84%", c: "#52b788", l: "Strong" },
+          { w: "100%", c: "#2ecc71", l: "Very strong" },
         ];
-
-        const level = levels[score] || levels[0];
-        strengthFill.style.width = level.pct;
-        strengthFill.style.background = level.color;
-        strengthLabel.textContent = val.length ? level.label : "";
-        strengthLabel.style.color = level.color;
+        const lv = levels[s] || levels[0];
+        sBar.style.width = lv.w;
+        sBar.style.background = lv.c;
+        sLabel.textContent = v.length ? lv.l : "";
+        sLabel.style.color = lv.c;
       });
 
+      // Form submit
       document
         .getElementById("signupForm")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
           const btn = document.getElementById("submitBtn");
-          const errorMsg = document.getElementById("errorMsg");
-          const successMsg = document.getElementById("successMsg");
-
+          const err = document.getElementById("err");
+          const ok = document.getElementById("ok");
           const firstName = document.getElementById("firstName").value.trim();
           const lastName = document.getElementById("lastName").value.trim();
           const email = document.getElementById("email").value.trim();
           const password = pwInput.value;
 
-          errorMsg.classList.remove("show");
-          successMsg.classList.remove("show");
+          err.classList.remove("show");
+          ok.classList.remove("show");
 
           if (!firstName || !email || !password) {
-            errorMsg.textContent =
-              "Please fill in all fields (Last Name is optional)";
-            errorMsg.classList.add("show");
+            err.textContent = "Please fill in all fields.";
+            err.classList.add("show");
             return;
           }
-
           if (password.length < 6) {
-            errorMsg.textContent = "Password must be at least 6 characters.";
-            errorMsg.classList.add("show");
+            err.textContent = "Password must be at least 6 characters.";
+            err.classList.add("show");
             return;
           }
 
@@ -553,27 +640,21 @@
               body: JSON.stringify({ firstName, lastName, email, password }),
               credentials: "include",
             });
-
             const data = await res.json();
-
             if (!res.ok) {
-              errorMsg.textContent =
-                data.error || "Something went wrong. Please try again.";
-              errorMsg.classList.add("show");
-              btn.textContent = "Create account";
+              err.textContent = data.error || "Something went wrong.";
+              err.classList.add("show");
+              btn.textContent = "Create your account";
               btn.classList.remove("loading");
               return;
             }
-
-            successMsg.textContent =
-              "Account created! Redirecting you to sign in…";
-            successMsg.classList.add("show");
+            ok.textContent = "Account created! Redirecting you to sign in…";
+            ok.classList.add("show");
             setTimeout(() => (window.location.href = "/login"), 1500);
-          } catch (err) {
-            errorMsg.textContent =
-              "Could not connect to server. Please try again.";
-            errorMsg.classList.add("show");
-            btn.textContent = "Create account";
+          } catch (ex) {
+            err.textContent = "Could not connect. Please try again.";
+            err.classList.add("show");
+            btn.textContent = "Create your account";
             btn.classList.remove("loading");
           }
         });
